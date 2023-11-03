@@ -33,7 +33,7 @@ jobs:
     - name: Check Branch Date
       run: |
         echo "Branch= ${{ env.Branch }}"
-        echo "Date= ${{ env.Date }}
+        echo "Date= ${{ env.Date }}"
 
     - name: Define Tag
       run: |
