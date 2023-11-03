@@ -27,7 +27,7 @@ jobs:
 
     - name: Create Branch Date
       run: |
-        echo "Branch=$((GITHUB_REF#refs/heads/))" >> $GITHUB_ENV
+        echo "Branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         echo "Date=$(date +'%d-%m-%y') >> $GITHUB_ENV
 
     - name: Check Branch Date
