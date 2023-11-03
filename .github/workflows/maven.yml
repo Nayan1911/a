@@ -24,5 +24,24 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn clean install 
+
+    - name: Create Branch Date
+      run: |
+        echo "Branch=$((GITHUB_REF#refs/heads/))" >> $GITHUB_ENV
+        echo "Date=$(date +'%d-%m-%y') >> $GITHUB_ENV
+
+    - name: Check Branch Date
+      run: |
+        echo "Branch= ${{ env.Branch }}"
+        echo "Date= ${{ env.Date }}
+
+    - name: Define Tag
+      run: |
+        IMAGE_NAME="sharmanayan/abc"
+        DOCKERHUB_REPO="docker.io/library/$IMAGE_NAME"
+        # Fetch the latest image tag from Docker Hub
+        DOCKERHUB_TAGS=$(curl -s "https://registry.hub.docker.com/v1/repositories/$DOCKERHUB_REPO/tags" | jq -r 'keys_unsorted[-1]')
+        echo "Docker tag: $DOCKERHUB_TAGS"
+
+#    - name: Build with Maven
+#      run: mvn clean install
