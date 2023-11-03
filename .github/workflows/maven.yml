@@ -40,8 +40,8 @@ jobs:
         IMAGE_NAME="sharmanayan/abc"
         DOCKERHUB_REPO="docker.io/library/$IMAGE_NAME"
         # Fetch the latest image tag from Docker Hub
-        DOCKERHUB_TAGS=$(curl -s "https://registry.hub.docker.com/v1/repositories/$DOCKERHUB_REPO/tags" | jq -r 'keys_unsorted[-1]')
-        echo "Docker tag: $DOCKERHUB_TAGS"
+        DOCKERHUB_TAGS=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/sharmanayan/abc/tags?page_size=10" | jq -r '.results[].name')
+        echo "Docker tags: $DOCKERHUB_TAGS"
 
 #    - name: Build with Maven
 #      run: mvn clean install
