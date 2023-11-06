@@ -41,19 +41,19 @@ jobs:
         TAG="${{ env.BRANCH }}-${{ env.DATE }}"
         DOCKERHUB_TAGS=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
         echo "Docker tags: $DOCKERHUB_TAGS"
-#        if [ -n "$DOCKERHUB_TAGS" ]; then
-#          NUMERIC_TAG="${DOCKERHUB_TAGS##*.}"
-#          echo "NUMERIC TAG: "$NUMERIC_TAG"
-#          NUMERIC_TAG=$((NUMERIC_TAG + 1))
-#          echo "NUMERIC TAG: "$NUMERIC_TAG"
-#          DOCKER_TAG="$IMAGE_NAME:$TAG.${{ env.BRANCH }}-${{ env.DATE }}.$NUMERIC_TAG"
-#          echo "FINAL TAG: $DOCKER_TAG"
-#          echo "$DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
-#        else
-#          DOCKER_TAG=$IMAGE_NAME:$TAG.${{ env.BRANCH }}-${{ env.DATE }}.1"
-#          echo "FINAL TAG: $DOCKER_TAG"
-#          echo "$DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
-#        fi
+        if [ -n "$DOCKERHUB_TAGS" ]; then
+          NUMERIC_TAG="${DOCKERHUB_TAGS##*.}"
+          echo "NUMERIC TAG: "$NUMERIC_TAG"
+          NUMERIC_TAG=$((NUMERIC_TAG + 1))
+          echo "NUMERIC TAG: "$NUMERIC_TAG"
+          DOCKER_TAG=$IMAGE_NAME:$TAG.$NUMERIC_TAG
+          echo "FINAL TAG: $DOCKER_TAG"
+          echo "$DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
+        else
+          DOCKER_TAG=$IMAGE_NAME:$TAG.1
+          echo "FINAL TAG: $DOCKER_TAG"
+          echo "$DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+        fi
 
 #    - name: Build with Maven
 #      run: mvn clean install
