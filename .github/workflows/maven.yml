@@ -39,7 +39,7 @@ jobs:
       run: |
         IMAGE_NAME="sharmanayan/abc"
         TAG="${{ env.BRANCH }}-${{ env.DATE }}"
-        DOCKERHUB_TAGS=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | awk '{print $NF}')
+        DOCKERHUB_TAGS=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | awk '{print $1}')
         echo "Docker tags: $DOCKERHUB_TAGS"
 #        if [ -n "$DOCKERHUB_TAGS" ]; then
 #          NUMERIC_TAG="${DOCKERHUB_TAGS##*.}"
