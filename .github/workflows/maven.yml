@@ -42,7 +42,7 @@ jobs:
         # Fetch the latest image tag from Docker Hub
         DOCKERHUB_TAGS=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name')
         echo "Docker tags: $DOCKERHUB_TAGS"
-        if [ -n "$DOCKERHUB_TAGS"]; then 
+        if [ -n "$DOCKERHUB_TAGS" ]; then, 
           NUMERIC_TAG="${DOCKERHUB_TAGS##*.}"
           echo "NUMERIC TAG: "$NUMERIC_TAG"
           NUMERIC_TAG=$((NUMERIC_TAG + 1))
