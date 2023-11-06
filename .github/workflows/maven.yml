@@ -51,7 +51,7 @@ jobs:
           echo "FINAL TAG: $DOCKER_TAG"
           echo "$DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
         else 
-          DOCKER_TAG=$IMAGE_NAME:$TAG
+          DOCKER_TAG=$IMAGE_NAME:$TAG.1
           echo "FINAL TAG: $DOCKER_TAG"
           echo "$DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
         fi
