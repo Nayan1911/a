@@ -86,13 +86,18 @@ jobs:
 
     - name: Assign Branch & Date
       run: |
-        echo "BRANCH=${GITHUB_REFS#refs/heads/}" >> $GITHUB_ENV
+        echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         echo "DATE=$(date +'%d.%m.%y')" >> $GITHUB_ENV
 
     - name: Check Branch & Date
       run: |
         echo "Branch is: ${{ env.BRANCH }}"
         echo "Date is: ${{ env.DATE }}"
+        echo "TAG=${{ env.BRANCH }}/${{ env.DATE }}" >> $GITHUB_ENV
+
+    - name: Check Final Tag
+      run: | 
+        echo "Tag is: ${{ env.TAG }}"
 
 #    - name: Build with Maven
 #      run: mvn clean install
