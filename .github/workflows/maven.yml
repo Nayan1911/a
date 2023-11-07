@@ -60,11 +60,10 @@ jobs:
 
     - name: Check tag
       run: |
-        echo "Tag Is: {{ env.DOCKER_TAG }}"
+        echo "Tag Is: ${{ env.DOCKER_TAG }}"
 
     - name: Build and push Docker image
       run: |
         echo "Qwerty@12345" | docker login -u sharmanayan --password-stdin 
-        TAGS=${{ env.DOCKER_TAG }}
-        docker build --no-cache -t $TAGS .
-        docker push $TAGS   
+        docker build --no-cache -t ${{ env.DOCKER_TAG }} .
+        docker push ${{ env.DOCKER_TAG }}   
