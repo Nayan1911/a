@@ -35,9 +35,12 @@ jobs:
         echo "Branch= ${{ env.Branch }}"
         echo "Date= ${{ env.Date }}"
 
+    - name: Build with Maven
+      run: mvn clean install
+
     - name: Define Tag
       run: |
-        IMAGE_NAME="sharmanayan/abc"
+        IMAGE_NAME="sharmanayan/abc2"
         TAG="${{ env.Branch }}-${{ env.Date }}"
         DOCKERHUB_TAGS=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
         echo "Docker tags: $DOCKERHUB_TAGS"
@@ -45,7 +48,7 @@ jobs:
           NUMERIC_PART="${DOCKERHUB_TAGS##*.}"
           echo "NUMERIC PART: "$NUMERIC_PART"
           NUMERIC_PARTS=$((NUMERIC_PART + 1))
-          echo "NUMERIC PART: "$NUMERIC_PARTS"
+          echo "NUMERIC PART: $NUMERIC_PARTS"
           DOCKER_TAG=IMAGE_NAME:$TAG.$NUMERIC_PARTS
           echo "FINAL TAG: $DOCKER_TAG"
           echo "$DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
@@ -55,5 +58,12 @@ jobs:
           echo "$DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
         fi
 
-#    - name: Build with Maven
-#      run: mvn clean install
+    - name: Check tag
+      run: |
+        echo "Tag Is: {{ env.DOCKER_TAG }}"
+
+    - name: Build and push Docker image
+      run: |
+        echo "Qwerty@12345" | docker login -u sharmanayan --password-stdin 
+        docker build -t ${{ env.DOCKER_TAG }} .
+        docker push ${{ env.DOCKER_TAG }}  
