@@ -44,9 +44,9 @@ jobs:
         if [ -n "$DOCKERHUB_TAGS" ]; then
           NUMERIC_PART="${DOCKERHUB_TAGS##*.}"
           echo "NUMERIC PART: "$NUMERIC_PART"
-          NUMERIC_PART=$((NUMERIC_PART + 1))
-          echo "NUMERIC PART: "$NUMERIC_PART"
-          DOCKER_TAG=IMAGE_NAME:$TAG.$NUMERIC_TAG
+          NUMERIC_PARTS=$((NUMERIC_PART + 1))
+          echo "NUMERIC PART: "$NUMERIC_PARTS"
+          DOCKER_TAG=IMAGE_NAME:$TAG.$NUMERIC_PARTS
           echo "FINAL TAG: $DOCKER_TAG"
           echo "$DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
         else
