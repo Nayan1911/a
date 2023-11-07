@@ -49,11 +49,11 @@ jobs:
           echo "NUMERIC PART: "$NUMERIC_PART"
           NUMERIC_PARTS=$((NUMERIC_PART + 1))
           echo "NUMERIC PART: $NUMERIC_PARTS"
-          DOCKER_TAG=IMAGE_NAME:$TAG.$NUMERIC_PARTS
+          DOCKER_TAG="$IMAGE_NAME:$TAG.$NUMERIC_PARTS"
           echo "FINAL TAG: $DOCKER_TAG"
           echo "$DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
         else
-          DOCKER_TAG=$IMAGE_NAME:$TAG.1
+          DOCKER_TAG=DOCKER_TAG="$IMAGE_NAME:$TAG.1"
           echo "$DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
         fi
 
