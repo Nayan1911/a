@@ -1,15 +1,74 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+#name: Java CI with Maven
+#
+#on:
+#  workflow_dispatch:
+#
+#jobs:
+#  build:
+#
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - uses: actions/checkout@v3
+#    - name: Set up JDK 17
+#      uses: actions/setup-java@v3
+#      with:
+#        java-version: '17'
+#        distribution: 'temurin'
+#        cache: maven
+#
+#    - name: Create Branch Date
+#      run: |
+#        echo "Branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+#        echo "Date=$(date +'%d-%m-%y')" >> $GITHUB_ENV
+#
+#    - name: Check Branch Date
+#      run: |
+#        echo "Branch= ${{ env.Branch }}"
+#        echo "Date= ${{ env.Date }}"
+#
+#    - name: Build with Maven
+#      run: mvn clean install
+#
+#    - name: Define Tag
+#      run: |
+#        IMAGE_NAME="sharmanayan/abc"
+#        TAG="${{ env.Branch }}-${{ env.Date }}"
+#        DOCKERHUB_TAGS=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
+#        echo "Docker tags: $DOCKERHUB_TAGS"
+#        if [ -n "$DOCKERHUB_TAGS" ]; then
+#          NUMERIC_PART="${DOCKERHUB_TAGS##*.}"
+#          echo "NUMERIC PART: $NUMERIC_PART"
+#          NUMERIC_PARTS=$((NUMERIC_PART + 1))
+#          echo "NUMERIC PART: $NUMERIC_PARTS"
+#          DOCKER_TAG="$IMAGE_NAME:$TAG.$NUMERIC_PARTS"
+#          echo "FINAL TAG: $DOCKER_TAG"
+#          echo "DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
+#        else
+#          DOCKER_TAG="$IMAGE_NAME:$TAG.1"
+#          echo "Final Tag: $DOCKER_TAG"
+#          echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+#        fi
+#
+#    - name: Check tag
+#      run: |
+#        echo "Tag Is: ${{ env.DOCKER_TAG }}"
+#
+#    - name: Build and push Docker image
+#      run: |
+#        echo "Qwerty@12345" | docker login -u sharmanayan --password-stdin
+#        docker build -t ${{ env.DOCKER_TAG }} .
+#        docker push ${{ env.DOCKER_TAG }}
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
 
-name: Java CI with Maven
 
-on: 
-  workflow_dispatch: 
+name: Recreating
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   build:
@@ -25,45 +84,15 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Create Branch Date
+    - name: Assign Branch & Date
       run: |
-        echo "Branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-        echo "Date=$(date +'%d-%m-%y')" >> $GITHUB_ENV
+        echo "BRANCH=${GITHUB_REFS#refs/heads/}" >> $GITHUB_ENV
+        echo "DATE=$(date +'%d.%m.%y')" >> $GITHUB_ENV
 
-    - name: Check Branch Date
+    - name: Check Branch & Date
       run: |
-        echo "Branch= ${{ env.Branch }}"
-        echo "Date= ${{ env.Date }}"
+        echo "Branch is: ${{ env.BRANCH }}"
+        echo "Date is: ${{ env.DATE }}"
 
-    - name: Build with Maven
-      run: mvn clean install
-
-    - name: Define Tag
-      run: |
-        IMAGE_NAME="sharmanayan/abc"
-        TAG="${{ env.Branch }}-${{ env.Date }}"
-        DOCKERHUB_TAGS=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
-        echo "Docker tags: $DOCKERHUB_TAGS"
-        if [ -n "$DOCKERHUB_TAGS" ]; then
-          NUMERIC_PART="${DOCKERHUB_TAGS##*.}"
-          echo "NUMERIC PART: $NUMERIC_PART"
-          NUMERIC_PARTS=$((NUMERIC_PART + 1))
-          echo "NUMERIC PART: $NUMERIC_PARTS"
-          DOCKER_TAG="$IMAGE_NAME:$TAG.$NUMERIC_PARTS"
-          echo "FINAL TAG: $DOCKER_TAG"
-          echo "DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
-        else
-          DOCKER_TAG="$IMAGE_NAME:$TAG.1"
-          echo "Final Tag: $DOCKER_TAG"
-          echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
-        fi
-
-    - name: Check tag
-      run: |
-        echo "Tag Is: ${{ env.DOCKER_TAG }}"
-
-    - name: Build and push Docker image
-      run: |
-        echo "Qwerty@12345" | docker login -u sharmanayan --password-stdin 
-        docker build -t ${{ env.DOCKER_TAG }} .
-        docker push ${{ env.DOCKER_TAG }} 
+#    - name: Build with Maven
+#      run: mvn clean install
