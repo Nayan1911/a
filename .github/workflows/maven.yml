@@ -35,8 +35,8 @@ jobs:
         echo "Branch= ${{ env.Branch }}"
         echo "Date= ${{ env.Date }}"
 
-    - name: Build with Maven
-      run: mvn clean install
+#    - name: Build with Maven
+#      run: mvn clean install
 
     - name: Define Tag
       run: |
@@ -46,14 +46,14 @@ jobs:
         echo "Docker tags: $DOCKERHUB_TAGS"
         if [ -n "$DOCKERHUB_TAGS" ]; then
           NUMERIC_PART="${DOCKERHUB_TAGS##*.}"
-          echo "NUMERIC PART: "$NUMERIC_PART"
+          echo "NUMERIC PART: $NUMERIC_PART"
           NUMERIC_PARTS=$((NUMERIC_PART + 1))
           echo "NUMERIC PART: $NUMERIC_PARTS"
-          DOCKER_TAG=$IMAGE_NAME:$TAG.$NUMERIC_PARTS
+          DOCKER_TAG="$IMAGE_NAME:$TAG.$NUMERIC_PARTS"
           echo "FINAL TAG: $DOCKER_TAG"
           echo "$DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
         else
-          DOCKER_TAG=$IMAGE_NAME:$TAG.1
+          DOCKER_TAG="$IMAGE_NAME:$TAG.1"
           echo "Final Tag: $DOCKER_TAG"
           echo "$DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
         fi
