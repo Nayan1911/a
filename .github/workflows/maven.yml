@@ -40,7 +40,7 @@ jobs:
 
     - name: Define Tag
       run: |
-        IMAGE_NAME="sharmanayan/abc2"
+        IMAGE_NAME="sharmanayan/abc"
         TAG="${{ env.Branch }}-${{ env.Date }}"
         DOCKERHUB_TAGS=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
         echo "Docker tags: $DOCKERHUB_TAGS"
@@ -54,7 +54,6 @@ jobs:
           echo "$DOCKER_TAG=$DOCKER_TAG"  >> $GITHUB_ENV
         else
           DOCKER_TAG=$IMAGE_NAME:$TAG.1
-          echo "FINAL TAG: $DOCKER_TAG"
           echo "$DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
         fi
 
