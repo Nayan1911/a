@@ -35,8 +35,8 @@ jobs:
         echo "Branch= ${{ env.Branch }}"
         echo "Date= ${{ env.Date }}"
 
-#    - name: Build with Maven
-#      run: mvn clean install
+    - name: Build with Maven
+      run: mvn clean install
 
     - name: Define Tag
       run: |
