@@ -65,5 +65,5 @@ jobs:
     - name: Build and push Docker image
       run: |
         echo "Qwerty@12345" | docker login -u sharmanayan --password-stdin 
-        docker build --no-cache -t ${{ env.DOCKER_TAG }} .
-        docker push ${{ env.DOCKER_TAG }}   
+        docker build -t ${{ env.DOCKER_TAG }} .
+        docker push ${{ env.DOCKER_TAG }} .
