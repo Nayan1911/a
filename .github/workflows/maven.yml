@@ -93,7 +93,7 @@ jobs:
       run: |
         echo "Branch is: ${{ env.BRANCH }}"
         echo "Date is: ${{ env.DATE }}"
-        echo "TAG=${{ env.BRANCH }}/${{ env.DATE }}" >> $GITHUB_ENV
+        echo "TAG=${{ env.BRANCH }}/${{ env.DATE }}/1" >> $GITHUB_ENV
 
     - name: Check Final Tag
       run: | 
@@ -101,3 +101,26 @@ jobs:
 
 #    - name: Build with Maven
 #      run: mvn clean install
+
+    - name: Define Tagging statement
+      run: |
+        IMAGE_NAME:"sharmanayan/abc2"
+        TAGGING="${{ env.BRANCH }}/${{ env.DATE }}"
+        DOCKER_HUB=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
+        echo "DOCKER HUB TAG=$DOCKER_HUB"
+        if [ -n '$DOCKER_HUB' ]; then
+          NUMERIC_PART="${DOCKER_HUB##*/}"
+          NUMERIC PART= $((NUMERIC_PART+1))
+          echo "NUMERIC PARTS IS: $NUMERIC_PART"
+          NEW_TAG="$IMAGE_NAME:$TAGGING/$NUMERIC_PART"
+          echo "NEW TAG IS: $$NEW_TAG"
+          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
+        else 
+          NEW_TAG="$IMAGE_NAME:$TAGGING/1"
+          echo "NEW TAG IS: $NEW_TAG"
+          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
+        fi
+
+    - name: TAG CHECK
+      run: |
+        echo "DOCKER TAG IS: ${{ env.NEW_TAG }}"
