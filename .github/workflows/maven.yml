@@ -99,8 +99,8 @@ jobs:
       run: | 
         echo "Tag is: ${{ env.TAG }}"
 
-#    - name: Build with Maven
-#      run: mvn clean install
+    - name: Build with Maven
+      run: mvn clean install
 
     - name: Define Tagging statement
       run: |
