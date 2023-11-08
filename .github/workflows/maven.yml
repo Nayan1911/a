@@ -108,7 +108,7 @@ jobs:
         TAGGING="${{ env.BRANCH }}/${{ env.DATE }}"
         DOCKER_HUB=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
         echo "DOCKER HUB TAG: $DOCKER_HUB"
-        if [ -n "$DOCKER_HUB" ]; then
+        if [ -z "$DOCKER_HUB" ]; then
           NUMERIC_PART="${DOCKER_HUB##*/}"
           NUMERIC PART= $((NUMERIC_PART+1))
           echo "NUMERIC PARTS IS: $NUMERIC_PART"
