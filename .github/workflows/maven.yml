@@ -128,5 +128,5 @@ jobs:
     - name: DOCKER BUILD AND PUSH
       run: |
         echo "Qwerty@12345" | docker login -u sharmanayan --password-stdin
-        docker build -t ${{ env_NEW_TAG }} .
-        docker push ${{ env_NEW_TAG }}
+        docker build -t ${{ env.NEW_TAG }} .
+        docker push ${{ env.NEW_TAG }}
