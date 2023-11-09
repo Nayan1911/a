@@ -121,6 +121,7 @@ jobs:
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
         fi
 
+
     - name: TAG CHECK
       run: |
         echo "DOCKER TAG IS: ${{ env.NEW_TAG }}"
