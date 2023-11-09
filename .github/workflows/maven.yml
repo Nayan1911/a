@@ -112,11 +112,11 @@ jobs:
           NUMERIC_PART="${DOCKER_HUB##*/}"
           NUMERIC_PART=$((NUMERIC_PART + 1))
           echo "NUMERIC PARTS IS: $NUMERIC_PART"
-          NEW_TAG="$IMAGE_NAME:$TAGGING/$NUMERIC_PART"
+          NEW_TAG="$IMAGE_NAME:$TAGGING-$NUMERIC_PART"
           echo "NEW TAG IS: $NEW_TAG"
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
         else 
-          NEW_TAG="$IMAGE_NAME:$TAGGING/1"
+          NEW_TAG="$IMAGE_NAME:$TAGGING-1"
           echo "NEW TAG IS: $NEW_TAG"
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
         fi
