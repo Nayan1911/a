@@ -99,8 +99,8 @@ jobs:
       run: | 
         echo "Tag is: ${{ env.TAG }}"
 
-#    - name: Build with Maven
-#      run: mvn clean install
+    - name: Build with Maven
+      run: mvn clean install
 
     - name: Define Tagging statement
       run: |
@@ -108,9 +108,9 @@ jobs:
         TAGGING="${{ env.BRANCH }}/${{ env.DATE }}"
         DOCKER_HUB=$(curl -s -H "Authorization: Bearer dckr_pat_ynxOJfBS7qKogS2cQVD78HUTto0" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
         echo "DOCKER HUB TAG: $DOCKER_HUB"
-        if [ -z "$DOCKER_HUB" ]; then
+        if [ -n "$DOCKER_HUB" ]; then
           NUMERIC_PART="${DOCKER_HUB##*/}"
-          NUMERIC_PART= $((NUMERIC_PART + 1))
+          NUMERIC_PART=$((NUMERIC_PART + 1))
           echo "NUMERIC PARTS IS: $NUMERIC_PART"
           NEW_TAG="$IMAGE_NAME:$TAGGING/$NUMERIC_PART"
           echo "NEW TAG IS: $NEW_TAG"
