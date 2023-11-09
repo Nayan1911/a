@@ -93,7 +93,7 @@ jobs:
       run: |
         echo "Branch is: ${{ env.BRANCH }}"
         echo "Date is: ${{ env.DATE }}"
-        echo "TAG=${{ env.BRANCH }}/${{ env.DATE }}/1" >> $GITHUB_ENV
+        echo "TAG=${{ env.BRANCH }}-${{ env.DATE }}-1" >> $GITHUB_ENV
 
     - name: Check Final Tag
       run: | 
