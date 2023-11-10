@@ -133,27 +133,23 @@ jobs:
     if: ${{ github.event.inputs.runStage == 'push' }}
 
     steps:
-#      - name: Assign Branch & Date
-#        run: |
-#          echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-#          echo "DATE=$(date +'%d_%m_%y')" >> $GITHUB_ENV
+      - name: Assign Branch & Date
+        run: |
+          echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "DATE=$(date +'%d_%m_%y')" >> $GITHUB_ENV
 
-#      - name: Check Branch & Date
-#        run: |
-#          echo "Branch is: ${{ env.BRANCH }}"
-#          echo "Date is: ${{ env.DATE }}"
-#          echo "TAG=${{ env.BRANCH }}-${{ env.DATE }}-1" >> $GITHUB_ENV
-#
-#      - name: Check Final Tag
-#        run: |
-#          echo "Tag is: ${{ env.TAG }}"
+      - name: Check Branch & Date
+        run: |
+          echo "Branch is: ${{ env.BRANCH }}"
+          echo "Date is: ${{ env.DATE }}"
+          echo "TAG=${{ env.BRANCH }}-${{ env.DATE }}-1" >> $GITHUB_ENV
+
+      - name: Check Final Tag
+        run: |
+          echo "Tag is: ${{ env.TAG }}"
 
       - name: Define Tagging statement
         run: |
-          echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-          echo "Branch is: $BRANCH"
-          echo "DATE=$(date +'%d_%m_%y')" >> $GITHUB_ENV
-          echo "Date is: $DATE"
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/abc2"
           TAGGING="$BRANCH-$DATE"
           echo "TAG IS: $TAGGING"
