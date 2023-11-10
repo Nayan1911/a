@@ -150,10 +150,10 @@ jobs:
             echo "NEW TAG IS: $NEW_TAG"
             echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV          
           else 
-            NUMERIC_PART=$(echo "$DOCKER_HUB" | awk -F'-' '{print $NF}')
+            NUMERIC_PART=$(echo "$DOCKER_HUB" | awk -F'-' '{print $3}')
             NUMERIC_PART=$((NUMERIC_PART + 1))
             echo "NUMERIC PARTS IS: $NUMERIC_PART"
-            NEW_TAG="$IMAGE_NAME:$TAGGING$NUMERIC_PART"
+            NEW_TAG="$IMAGE_NAME:$TAGGING-$NUMERIC_PART"
             echo "NEW TAG IS: $NEW_TAG"
             echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
           fi
