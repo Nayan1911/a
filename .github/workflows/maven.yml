@@ -160,6 +160,11 @@ jobs:
             echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
           fi
 
+      - name: Set up Docker
+        uses: docker/setup-docker@v2
+        with:
+          dockerfile: Dockerfile
+
       - name: TAG CHECK
         run: |
           echo "DOCKER TAG IS: ${{ env.NEW_TAG }}"
