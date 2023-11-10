@@ -64,9 +64,6 @@ name: Recreating
 
 on:
   workflow_run:
-    workflows: [ "Recreating" ]
-    types:
-      - completed
 
 jobs:
   build:
