@@ -83,20 +83,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Assign Branch & Date
-      run: |
-        echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-        echo "DATE=$(date +'%d_%m_%y')" >> $GITHUB_ENV
-
-    - name: Check Branch & Date
-      run: |
-        echo "Branch is: ${{ env.BRANCH }}"
-        echo "Date is: ${{ env.DATE }}"
-        echo "TAG=${{ env.BRANCH }}-${{ env.DATE }}-1" >> $GITHUB_ENV
-
-    - name: Check Final Tag
-      run: | 
-        echo "Tag is: ${{ env.TAG }}"
 
     - name: Build with Maven
       run: mvn clean install
@@ -139,6 +125,21 @@ jobs:
     needs: build
 
     steps:
+      - name: Assign Branch & Date
+        run: |
+          echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "DATE=$(date +'%d_%m_%y')" >> $GITHUB_ENV
+
+      - name: Check Branch & Date
+        run: |
+          echo "Branch is: ${{ env.BRANCH }}"
+          echo "Date is: ${{ env.DATE }}"
+          echo "TAG=${{ env.BRANCH }}-${{ env.DATE }}-1" >> $GITHUB_ENV
+
+      - name: Check Final Tag
+        run: |
+          echo "Tag is: ${{ env.TAG }}"  
+
       - name: Define Tagging statement
         run: |
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/abc2"
