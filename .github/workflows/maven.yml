@@ -63,10 +63,10 @@
 name: Recreating
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  workflow_run:
+    workflows: [ "Recreating" ]
+    types:
+      - completed
 
 jobs:
   build:
@@ -133,7 +133,6 @@ jobs:
 #        docker push ${{ env.NEW_TAG }}
 
 
-
   push:
 
     runs-on: ubuntu-latest
@@ -142,7 +141,7 @@ jobs:
     steps:
       - name: Define Tagging statement
         run: |
-          IMAGE_NAME="sharmanayan/abc2"
+          IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/abc2"
           TAGGING="${{ env.BRANCH }}-${{ env.DATE }}"
           DOCKER_HUB=$(curl -s -H "Authorization: Bearer ${{ secrets.DOCKER_TOKEN }}" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
           echo "DOCKER HUB TAG: $DOCKER_HUB"
@@ -154,7 +153,7 @@ jobs:
             NUMERIC_PART=$(echo "$DOCKER_HUB" | awk -F'-' '{print $NF}')
             NUMERIC_PART=$((NUMERIC_PART + 1))
             echo "NUMERIC PARTS IS: $NUMERIC_PART"
-            NEW_TAG="$IMAGE_NAME:$TAGGING-$NUMERIC_PART"
+            NEW_TAG="$IMAGE_NAME:$TAGGING$NUMERIC_PART"
             echo "NEW TAG IS: $NEW_TAG"
             echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
           fi
