@@ -64,6 +64,14 @@ name: Recreating
 
 on:
   workflow_dispatch:
+    inputs:
+      runStage:
+        description: 'Select the stage to run'
+        required: true
+        default: 'build'
+        options:
+          - 'build'
+          - 'deploy'
 
 jobs:
   build:
@@ -79,7 +87,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-
 
     - name: Build with Maven
       run: mvn clean install
