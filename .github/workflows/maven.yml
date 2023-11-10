@@ -143,17 +143,18 @@ jobs:
         run: |
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/abc2"
           TAGGING="${{ env.BRANCH }}-${{ env.DATE }}"
+          echo "TAGGING=$TAGGING" >> $GITHUB_ENV
           DOCKER_HUB=$(curl -s -H "Authorization: Bearer ${{ secrets.DOCKER_TOKEN }}" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
           echo "DOCKER HUB TAG: $DOCKER_HUB"
           if [ -z "$DOCKER_HUB" ]; then
-            NEW_TAG="$IMAGE_NAME:$TAGGING-1"
+            NEW_TAG="$IMAGE_NAME:${{ env.TAGGING }}-1"
             echo "NEW TAG IS: $NEW_TAG"
             echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV          
           else 
             NUMERIC_PART=$(echo "$DOCKER_HUB" | awk -F'-' '{print $3}')
             NUMERIC_PART=$((NUMERIC_PART + 1))
             echo "NUMERIC PARTS IS: $NUMERIC_PART"
-            NEW_TAG="$IMAGE_NAME:$TAGGING-$NUMERIC_PART"
+            NEW_TAG="$IMAGE_NAME:${{ env.TAGGING }}$NUMERIC_PART"
             echo "NEW TAG IS: $NEW_TAG"
             echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
           fi
