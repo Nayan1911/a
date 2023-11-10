@@ -103,7 +103,7 @@ on:
       runStage:
         description: 'Deploy Parameter'
         required: true
-        default: 'build'
+        default: 'push'
         options:
           - 'build'
           - 'push'
@@ -187,7 +187,6 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
         with:
-          context: .
-          dockerfile: D:\jenkins\Dockerfile
+          context: .\
           push: true
           tags: ${{ env.NEW_TAG }}
