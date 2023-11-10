@@ -63,7 +63,10 @@
 name: Recreating
 
 on:
-  workflow_run:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   build:
