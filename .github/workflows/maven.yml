@@ -163,7 +163,7 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-docker@v2
         with:
-          dockerfile: Dockerfile
+          dockerfile: https://github.com/Nayan1911/a/blob/8cbbc62ac844a5bc6155d8393c704b825ace7ce5/Dockerfile
 
       - name: TAG CHECK
         run: |
