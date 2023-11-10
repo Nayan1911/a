@@ -130,6 +130,7 @@ jobs:
   push:
     needs: build
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.runStage == 'push' }}
 
     steps:
       - name: Assign Branch & Date
