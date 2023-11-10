@@ -188,5 +188,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          dockerfile: D:\jenkins\Dockerfile
           push: true
           tags: ${{ env.NEW_TAG }}
