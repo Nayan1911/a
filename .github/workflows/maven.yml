@@ -174,9 +174,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ env.NEW_TAG }} .
+          docker build -t your-docker-username/your-image-name:main-13_11_23-5 -f Dockerfile .
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
 
       - name: Push Docker image
         run: |
