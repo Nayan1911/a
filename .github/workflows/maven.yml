@@ -187,6 +187,7 @@ jobs:
             echo "NEW TAG IS: $NEW_TAG"
             echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
           fi
+$ git remote add origin https://github.com/Nayan1911/a.git
 
       - name: TAG CHECK
         run: |
