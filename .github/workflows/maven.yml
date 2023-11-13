@@ -174,7 +174,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t your-docker-username/your-image-name:main-13_11_23-5 -f Dockerfile .
+          docker build -t your-docker-username/your-image-name:main-13_11_23-5 -f D:\jenkins\Dockerfile .
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
