@@ -133,7 +133,9 @@ jobs:
     if: ${{ github.event.inputs.runStage == 'push' }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Assign Branch & Date
         run: |
           echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
@@ -176,6 +178,7 @@ jobs:
 
       - name: Build Push Docker
         run: |
+          ls -R
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker build -t ${{ env.NEW_TAG }} . 
           docker push ${{ env.NEW_TAG }}
