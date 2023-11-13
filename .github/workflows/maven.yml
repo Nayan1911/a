@@ -151,7 +151,7 @@ jobs:
       - name: Define Tagging statement
         run: |
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/abc2"
-          TAGGING="$BRANCH-$DATE"
+          TAGGING="${{ env.BRANCH }}-${{ env.DATE }}"
           echo "TAG IS: $TAGGING"
           DOCKER_HUB=$(curl -s -H "Authorization: Bearer ${{ secrets.DOCKER_TOKEN }}" "https://hub.docker.com/v2/repositories/$IMAGE_NAME/tags?page_size=10" | jq -r '.results[].name' | tr ' ' '\n' | sort -Vr | tr '\n' ' ' | awk '{print $1}')
           echo "DOCKER HUB TAG: $DOCKER_HUB"
@@ -172,9 +172,17 @@ jobs:
         run: |
           echo "DOCKER TAG IS: ${{ env.NEW_TAG }}"
 
-      - name: DOCKER BUILD AND PUSH
+      - name: Build Docker image
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t ${{ env.NEW_TAG }} .
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: Push Docker image
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker push ${{ env.NEW_TAG }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
