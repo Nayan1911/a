@@ -133,8 +133,14 @@ jobs:
     if: ${{ github.event.inputs.runStage == 'push' }}
 
     steps:
+
+      - name: Print Build Context
+        run: ls -R
+
+
       - name: Checkout repository
         uses: actions/checkout@v3
+
 
       - name: Assign Branch & Date
         run: |
