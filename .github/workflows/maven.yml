@@ -146,9 +146,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Docker
-        uses: actions/setup-docker@v2
-
       # Download the JAR file from the build job
       - name: Download JAR artifact
         uses: actions/download-artifact@v2
