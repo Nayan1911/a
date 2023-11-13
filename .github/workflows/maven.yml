@@ -113,6 +113,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    outputs:
+      # Define the artifact name to be shared between jobs
+      artifacts: ${{ steps.maven.outputs.artifacts }}
 
     steps:
     - uses: actions/checkout@v3
@@ -126,6 +129,13 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
 
+    # Save the JAR file as an artifact
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: target
+        path: target/abc2.jar
+
 
   push:
     needs: build
@@ -136,8 +146,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Print Build Context
-        run: ls -R
+      - name: Set up Docker
+        uses: actions/setup-docker@v2
+
+      # Download the JAR file from the build job
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: target
+          path: target/abc2.jar
 
       - name: Assign Branch & Date
         run: |
